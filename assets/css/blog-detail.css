@@ -1,7 +1,7 @@
-/* Breakpoint visibility for blog-details/bbc-feature.html */
+/* Shared styles for all blog detail pages */
 @media(min-width: 1200px){.hidden-wacg80{display:none!important}}@media(min-width: 860px) and (max-width: 1199px){.hidden-1xg5i4d{display:none!important}}@media(max-width: 859px){.hidden-1sx70xw{display:none!important}}
 
-/* Page-specific styles for blog-details/bbc-feature.html */
+/* Page-specific styles for blog-details/aiatella-2m-seed.html */
 .blog-page.blog-page__scope-2,.blog-page .blog-page__scope-2{display:block}
 .blog-page.blog-page__scope{background-color:#fff;flex-flow:column;place-content:center flex-start;align-items:center;gap:0;width:1200px;height:min-content;padding:0;display:flex;position:relative;overflow:hidden}
 .blog-page .article__nav-container{z-index:1;flex:none;width:100%;height:auto;position:fixed;top:0;left:0}

@@ -1,0 +1,22 @@
+/* Aorta hero animations */
+@keyframes float-ct-scan {
+  0%, 100% { transform: perspective(5000px) translate(0px, 0px); }
+  50% { transform: perspective(5000px) translate(-10px, 10px); }
+}
+@keyframes float-bg-card {
+  0%, 100% { transform: perspective(5000px) translate(0px, 0px); }
+  50% { transform: perspective(5000px) translate(-25px, 25px); }
+}
+@keyframes float-aorta {
+  0%, 100% { transform: translate(0px, 0px); }
+  50% { transform: translate(-55px, 55px); }
+}
+.hero__ct-scan {
+  animation: float-ct-scan 4s ease-in-out infinite !important;
+}
+.hero__card {
+  animation: float-bg-card 5s ease-in-out infinite !important;
+}
+.hero__aorta {
+  animation: float-aorta 3.5s ease-in-out infinite !important;
+}

@@ -76,19 +76,26 @@
     <!-- End of headEnd -->
 
 <style data-aorta-animation>
-@keyframes aorta-float-1 {
+@keyframes float-ct-scan {
   0%, 100% { transform: perspective(5000px) translate(0px, 0px); }
   50% { transform: perspective(5000px) translate(-10px, 10px); }
 }
-@keyframes aorta-float-2 {
+@keyframes float-bg-card {
   0%, 100% { transform: perspective(5000px) translate(0px, 0px); }
   50% { transform: perspective(5000px) translate(-25px, 25px); }
 }
+@keyframes float-aorta {
+  0%, 100% { transform: translate(0px, 0px); }
+  50% { transform: translate(-55px, 55px); }
+}
 .framer-1wy7s79 {
-  animation: aorta-float-1 4s ease-in-out infinite !important;
+  animation: float-ct-scan 4s ease-in-out infinite !important;
 }
 .framer-1n8mrr8 {
-  animation: aorta-float-2 5s ease-in-out infinite !important;
+  animation: float-bg-card 5s ease-in-out infinite !important;
+}
+.framer-19m717h {
+  animation: float-aorta 3.5s ease-in-out infinite !important;
 }
 </style>
 </head>

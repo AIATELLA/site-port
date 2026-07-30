@@ -1091,7 +1091,11 @@ def medical_business():
             "parentOrganization": {"@id": ORG_ID},
             "availableService": [{
                 "@type": "MedicalProcedure", "name": "Carotid Artery Ultrasound Screening",
-                "procedureType": "https://schema.org/DiagnosticProcedure",
+                # MUST be a MedicalProcedureType enum member (NoninvasiveProcedure /
+                # PercutaneousProcedure). DiagnosticProcedure is a separate CLASS, not a
+                # member — and tagging a screening as diagnostic asserts authority the
+                # company does not hold (§2.4). Verified against schema.org.
+                "procedureType": "https://schema.org/NoninvasiveProcedure",
                 "howPerformed": ("Non-invasive carotid ultrasound, analysed by AI and "
                                  "reviewed by a physician."),
             }]}
@@ -1139,7 +1143,12 @@ def apply_one(p):
 
 
 if __name__ == "__main__":
-    banned = re.compile(r"\bFDA\b|\bCE[ -]mark", re.I)
+    # Catches implied clinical authority and unearned certification, not just the
+    # obvious regulator names — the original FDA/CE-only pattern missed a
+    # DiagnosticProcedure value that overstated the service.
+    banned = re.compile(
+        r"\bFDA\b|\bCE[ -]mark|\bcleared\b|\bcertified\b|DiagnosticProcedure"
+        r"|\bdiagnos(is|tic)\b", re.I)
     n = 0
     for p in pages.PAGES:
         if apply_one(p):

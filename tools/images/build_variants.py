@@ -33,7 +33,8 @@ currently on disk -- which is the true original in that case.
 
 Encoding:
     JPEG: quality=82, optimize=True, progressive=True, RGB, no EXIF
-          (Pillow only writes EXIF if you hand it back explicitly).
+          (Pillow only writes EXIF if you hand it back explicitly). Any
+          EXIF rotation is baked into the pixels first -- see plan_file.
     PNG:  optimize=True. RGBA preserved where the source has genuine
           partial transparency, else RGB. Never resized directly in P
           (palette) mode -- LANCZOS on a palette needs a full-colour
@@ -49,7 +50,7 @@ import os
 import re
 import sys
 
-from PIL import Image
+from PIL import Image, ImageOps
 
 TOOLS_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ROOT = os.path.dirname(TOOLS_DIR)
@@ -174,6 +175,19 @@ def plan_file(fname, manifest):
     current_hash = sha256(current_bytes)
     im = Image.open(io.BytesIO(current_bytes))
     im.load()
+    # Bake in EXIF orientation BEFORE measuring or resizing. Browsers honour
+    # the EXIF Orientation tag (image-orientation: from-image is the CSS
+    # default), but Pillow hands back the raw, unrotated pixel grid. So an
+    # image tagged Orientation=6 displays rotated 90 degrees in Chrome while
+    # measuring as landscape here. Re-encoding drops EXIF, and if we had not
+    # rotated the pixels first the image would silently render in a different
+    # orientation than it did before -- which is exactly what happened to
+    # assets/images/TiIgVJqdfp7Xe2j41XUsLQsUHQ.jpg on the first run of this
+    # tool. Transposing makes the pixels match what the browser used to show,
+    # so dropping the tag afterwards is a no-op visually. It also means W/H
+    # below are the *displayed* dimensions, which is what the ladder and the
+    # srcset w-descriptors must be based on.
+    im = ImageOps.exif_transpose(im)
     W, H = im.size
 
     result = dict(file=fname, path=path, intrinsic=(W, H), before=len(current_bytes),

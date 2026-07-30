@@ -1483,13 +1483,13 @@ def convert(path):
         s = fh.read()
     if "<footer" in s:
         return 0, "already has <footer>"
-    opens = [m.start() for m in re.finditer(r'<div(?=[^>]*footer__root)', s)]
+    opens = [m.start() for m in re.finditer(r'<div\b(?=[^>]*\bfooter__root\b)', s)]
     if not opens:
         return 0, "no footer__root found"
     n = 0
     for i in reversed(opens):                     # end-first keeps earlier offsets valid
         depth = 0; close = None
-        for t in re.finditer(r'<div|</div\s*>', s[i:]):
+        for t in re.finditer(r'<div\b|</div\s*>', s[i:]):
             depth += 1 if t.group(0).startswith("<div") else -1
             if depth == 0:
                 close, close_end = i + t.start(), i + t.end(); break

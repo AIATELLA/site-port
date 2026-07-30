@@ -275,7 +275,7 @@ All six new pages reuse the existing nav, footer and CSS conventions so they are
 - `privacy.html` — repair the literal `**Effective Date:**` markdown leaking through as a heading; refresh the stale November 2024 date
 - **Footer** — three fixes, applied across all pages including blog details:
   - currently links only Privacy → add Security, Terms and Cookies
-  - reads `Copyright © 2023`, three years stale (the live security page says 2025) → correct it
+  - visible copyright reads `Copyright © 2025. All rights reserved to AIATELLA.` → bump to 2026. (A `data-framer-name="Copyright © 2023…"` attribute also carries a stale year, but it is a Framer design-layer label that never renders — leave it alone, or strip it as harmless noise. It is **not** the user-visible string.)
   - there is no `<footer>` element anywhere on the site → wrap the existing footer markup in one, which also serves the landmark requirement in §7.4
 
 ---

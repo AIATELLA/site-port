@@ -49,7 +49,7 @@ def medical_business():
             "parentOrganization": {"@id": ORG_ID},
             "availableService": [{
                 "@type": "MedicalProcedure", "name": "Carotid Artery Ultrasound Screening",
-                "procedureType": "https://schema.org/DiagnosticProcedure",
+                "procedureType": "https://schema.org/NoninvasiveProcedure",
                 "howPerformed": ("Non-invasive carotid ultrasound, analysed by AI and "
                                  "reviewed by a physician."),
             }]}
@@ -97,7 +97,7 @@ def apply_one(p):
 
 
 if __name__ == "__main__":
-    banned = re.compile(r"\bFDA\b|\bCE[ -]mark", re.I)
+    banned = re.compile(r"\bFDA\b|\bCE[ -]mark|\bcleared\b|\bcertified\b|DiagnosticProcedure|\bdiagnos(is|tic)\b", re.I)
     n = 0
     for p in pages.PAGES:
         if apply_one(p):

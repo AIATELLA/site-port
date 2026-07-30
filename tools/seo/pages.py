@@ -10,6 +10,11 @@ ORG_ADDRESS = {
 IDX = "index,follow,max-image-preview:large"
 NO = "noindex,follow"
 
+# Cloudflare Web Analytics beacon token. Left as a placeholder deliberately --
+# verify.py check 11 must keep failing until the real token is set at
+# cutover; do not replace this with a real value here.
+CF_BEACON_TOKEN = "TODO-CF-TOKEN"
+
 # Top-level pages. `og` is the share-card slug; `schema` selects JSON-LD blocks.
 TOP = [
     dict(file="index.html", path="/", og="home", schema=["Organization", "WebSite"],
@@ -68,50 +73,77 @@ TOP = [
 
 # Blog posts. Titles are the real on-page headings; the `| AIATELLA` suffix is
 # appended by _blog() only when it fits inside 60 characters.
+#
+# `date` is the publication month visible on the page itself (e.g. "June
+# 2025"), recorded as an ISO year-month -- never a fabricated day. `None`
+# means no date could be sourced from the page, and datePublished is omitted
+# for that post.
+#
+# Only aiatella-2m-seed carries real article prose; every other post is a
+# pointer/press-mention page (title, date, source, prev/next links), so it
+# gets `WebPage` schema instead of `Article` (see FULL_ARTICLES below).
 _POSTS = [
     ("aiatella-2m-seed",
      "AIATELLA raises €2M for cardiovascular imaging AI",
-     "Finnish medtech AIATELLA secures €2M led by Nordic Science Investments to fund clinical trials and launch ultrasound-based preventative carotid screening."),
+     "Finnish medtech AIATELLA secures €2M led by Nordic Science Investments to fund clinical trials and launch ultrasound-based preventative carotid screening.",
+     "2025-06"),
     ("mtv3-features-aiatella",
      "MTV3: Finnish invention detects dangerous stenosis",
-     "Finland's MTV3 covers AIATELLA's AI screening, which detects and quantifies dangerous carotid artery narrowing in minutes rather than hours."),
+     "Finland's MTV3 covers AIATELLA's AI screening, which detects and quantifies dangerous carotid artery narrowing in minutes rather than hours.",
+     "2025-07"),
     ("aiatella-instrumentarium",
      "AIATELLA receives Instrumentarium science grant",
-     "AIATELLA receives a grant from the Instrumentarium Science Foundation to advance its automated cardiovascular image measurement technology."),
+     "AIATELLA receives a grant from the Instrumentarium Science Foundation to advance its automated cardiovascular image measurement technology.",
+     "2025-02"),
     ("aiatella-ceo-featured-in-2025-ai-visionaries-womens-health",
      "AIATELLA CEO named a 2025 AI Visionary",
-     "AIATELLA's CEO is featured in the 2025 AI Visionaries list for women's health, highlighting AI's role in closing the cardiovascular gender health gap."),
+     "AIATELLA's CEO is featured in the 2025 AI Visionaries list for women's health, highlighting AI's role in closing the cardiovascular gender health gap.",
+     "2025-01"),
     ("helsinkismart-aiatella",
      "How AIATELLA uses AI to transform radiology",
-     "Helsinki Smart profiles how AIATELLA's explainable AI automates radiology measurement work, freeing clinicians for interpretation and patient care."),
+     "Helsinki Smart profiles how AIATELLA's explainable AI automates radiology measurement work, freeing clinicians for interpretation and patient care.",
+     "2025-01"),
     ("hoiva",
      "AIATELLA featured in Hoiva & Terveys",
-     "Finnish healthcare publication Hoiva & Terveys features AIATELLA's AI-powered approach to faster, more accessible cardiovascular imaging."),
+     "Finnish healthcare publication Hoiva & Terveys features AIATELLA's AI-powered approach to faster, more accessible cardiovascular imaging.",
+     "2025-01"),
     ("slush2024-showcase",
      "AIATELLA demonstrates screening at Slush 2024",
-     "AIATELLA demonstrated its AI-powered preventative cardiovascular screening at Slush 2024 in Helsinki."),
+     "AIATELLA demonstrated its AI-powered preventative cardiovascular screening at Slush 2024 in Helsinki.",
+     "2024-11"),
     ("hi-nenc-report",
      "HI NENC report: early detection of CVD",
-     "Health Innovation North East and North Cumbria reports on using AIATELLA's AI to increase early detection of cardiovascular disease."),
+     "Health Innovation North East and North Cumbria reports on using AIATELLA's AI to increase early detection of cardiovascular disease.",
+     "2024-10"),
     ("bbc-feature",
      "BBC: closing the gender gap in heart disease",
-     "The BBC covers how AIATELLA's AI, trained on diverse populations, can help close the gender health gap in cardiovascular disease detection."),
+     "The BBC covers how AIATELLA's AI, trained on diverse populations, can help close the gender health gap in cardiovascular disease detection.",
+     "2024-10"),
     ("valve-trial",
      "Evaluating AI aortic root and valve measurement",
-     "Research evaluating AIATELLA's AI tool for automated measurement of the aortic root and valve in cardiac magnetic resonance imaging."),
+     "Research evaluating AIATELLA's AI tool for automated measurement of the aortic root and valve in cardiac magnetic resonance imaging.",
+     None),  # page shows only "May 4" with no year -- not sourceable
     ("from-mandate-to-mechanism-closing-the-delivery-gap-in-cardiovascular-screening",
      "Closing the cardiovascular screening delivery gap",
-     "Why cardiovascular screening mandates stall at delivery, and the mechanisms needed to turn policy into population-level screening."),
+     "Why cardiovascular screening mandates stall at delivery, and the mechanisms needed to turn policy into population-level screening.",
+     "2026-06"),
 ]
 
+# Posts with real article prose on the page (not just title/date/source/nav).
+# Everything else in _POSTS is a pointer/press-mention page and gets WebPage
+# schema instead of Article.
+FULL_ARTICLES = {"aiatella-2m-seed"}
 
-def _blog(slug, title, desc):
+
+def _blog(slug, title, desc, date=None):
     suffixed = f"{title} | AIATELLA"
+    article_type = "Article" if slug in FULL_ARTICLES else "WebPage"
     return dict(
         file=f"blog-details/{slug}.html",
         path=f"/blog-details/{slug}",
         title=suffixed if len(suffixed) <= 60 else title,
-        desc=desc, robots=IDX, og="blog", schema=["Organization", "Article"], slug=slug,
+        desc=desc, robots=IDX, og="blog", schema=["Organization", article_type],
+        slug=slug, date=date,
     )
 
 

@@ -10,6 +10,7 @@ import urllib.request
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import pages  # noqa: E402
 from htmlhead import read  # noqa: E402
+from build_jsonld import BANNED  # noqa: E402
 
 FAILS = []
 BASE = "http://127.0.0.1:8000"
@@ -162,11 +163,10 @@ def check_6():
         for want in p["schema"]:
             if want not in types:
                 fail(6, "%s missing @type %s (got %s)" % (p["file"], want, sorted(types)))
-        raw = read(p["file"])
-        for banned in ("FDA", "CE mark", "CE-mark", "FDA-approved", "FDA cleared"):
-            for b in blocks:
-                if banned.lower() in b.lower():
-                    fail(6, "%s schema contains regulatory claim %r" % (p["file"], banned))
+        for b in blocks:
+            m = BANNED.search(b)
+            if m:
+                fail(6, "%s schema contains regulatory overclaim %r" % (p["file"], m.group(0)))
 
 
 # 7 og:image resolves at 1200x630
@@ -204,7 +204,14 @@ def check_9():
         for href in set(re.findall(r'href="([^"#?][^"]*)"', read(p["file"]))):
             if re.match(r"^(https?:|mailto:|tel:|//|#)", href):
                 continue
-            target = os.path.normpath(os.path.join(d, href.split("#")[0].split("?")[0]))
+            clean = href.split("#")[0].split("?")[0]
+            # Root-relative refs (leading "/") resolve against the site root
+            # (repo root), exactly as a browser would -- not against the
+            # file's own directory.
+            if clean.startswith("/"):
+                target = os.path.normpath(clean.lstrip("/"))
+            else:
+                target = os.path.normpath(os.path.join(d, clean))
             if not os.path.exists(target):
                 fail(9, "%s -> broken link %s" % (p["file"], href))
 

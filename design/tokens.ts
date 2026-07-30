@@ -36,6 +36,9 @@ export const tokens = {
         deep: "#8a0000",
       },
     },
+    icon: {
+      nav: "#1d1f13",
+    },
   },
   fontFamily: {
     manrope: ["Manrope", "Manrope Placeholder", "sans-serif"],
@@ -132,6 +135,7 @@ export const cssVarNames = {
   "color.border.strong": "--aiatella-color-border-strong",
   "color.brand.red": "--aiatella-color-brand-red",
   "color.brand.red.deep": "--aiatella-color-brand-red-deep",
+  "color.icon.nav": "--aiatella-color-icon-nav",
   "fontFamily.manrope": "--aiatella-font-family-manrope",
   "fontFamily.inter": "--aiatella-font-family-inter",
   "fontWeight.regular": "--aiatella-font-weight-regular",

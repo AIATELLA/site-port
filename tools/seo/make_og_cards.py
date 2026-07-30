@@ -47,11 +47,15 @@ def render(slug, eyebrow, headline, uri):
     with open(tmp, "w", encoding="utf-8") as fh:
         fh.write(html)
     dest = os.path.join(OUT, slug + ".png")
+    if os.path.exists(dest):
+        os.remove(dest)
     subprocess.run([CHROME, "--headless=new", "--disable-gpu", "--hide-scrollbars",
                     "--force-device-scale-factor=1", "--window-size=1200,630",
                     "--screenshot=" + os.path.abspath(dest),
                     "file:///" + tmp.replace("\\", "/")],
                    check=True, capture_output=True, timeout=90)
+    if not os.path.exists(dest) or os.path.getsize(dest) < 1000:
+        raise SystemExit("failed to render %s: file missing or trivial" % slug)
     return dest
 
 

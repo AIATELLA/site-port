@@ -165,10 +165,13 @@ def shadow_css_value(value: dict, var_map: dict[str, str]) -> str:
     return prefix + " ".join(segments)
 
 
+TYPOGRAPHY_FIELDS = ("fontFamily", "fontSize", "lineHeight", "fontWeight", "letterSpacing")
+
+
 def typography_css_refs(value: dict, var_map: dict[str, str]) -> dict[str, str]:
     """Return the CSS value (var() ref or literal) for each typography field."""
     out = {}
-    for field in ("fontFamily", "fontSize", "lineHeight", "fontWeight"):
+    for field in TYPOGRAPHY_FIELDS:
         v = value[field]
         if is_alias(v):
             out[field] = f"var({var_map[alias_path(v)]})"
@@ -186,6 +189,7 @@ CSS_PROP_NAMES = {
     "fontSize": "font-size",
     "lineHeight": "line-height",
     "fontWeight": "font-weight",
+    "letterSpacing": "letter-spacing",
 }
 
 
@@ -202,7 +206,7 @@ def generate_css(tokens: dict) -> str:
         var_name = css_var_name(parts)
         if t == "typography":
             refs = typography_css_refs(token["$value"], var_map)
-            for field in ("fontFamily", "fontSize", "lineHeight", "fontWeight"):
+            for field in TYPOGRAPHY_FIELDS:
                 sub_var = f"{var_name}-{CSS_PROP_NAMES[field]}"
                 root_lines.append(f"  {sub_var}: {refs[field]};")
             typography_leaves.append((parts, token))
@@ -218,7 +222,7 @@ def generate_css(tokens: dict) -> str:
         class_name = "aiatella-" + "-".join(disp[1:])
         var_name = css_var_name(parts)
         lines = [f".{class_name} {{"]
-        for field in ("fontFamily", "fontSize", "lineHeight", "fontWeight"):
+        for field in TYPOGRAPHY_FIELDS:
             prop = CSS_PROP_NAMES[field]
             lines.append(f"  {prop}: var({var_name}-{prop});")
         lines.append("}")
@@ -287,7 +291,7 @@ def resolve_alias_value(value: Any, raw_map: dict[str, dict]) -> Any:
 
 def typography_ts_object(value: dict, raw_map: dict[str, dict]) -> str:
     parts = []
-    for field in ("fontFamily", "fontSize", "lineHeight", "fontWeight"):
+    for field in TYPOGRAPHY_FIELDS:
         v = value[field]
         resolved = resolve_alias_value(v, raw_map)
         if resolved is not None:

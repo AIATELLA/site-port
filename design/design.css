@@ -40,46 +40,57 @@
   --aiatella-typography-display-xl-font-size: 64px;
   --aiatella-typography-display-xl-line-height: 80px;
   --aiatella-typography-display-xl-font-weight: var(--aiatella-font-weight-medium);
+  --aiatella-typography-display-xl-letter-spacing: 0px;
   --aiatella-typography-display-l-font-family: var(--aiatella-font-family-manrope);
   --aiatella-typography-display-l-font-size: 40px;
   --aiatella-typography-display-l-line-height: 48px;
   --aiatella-typography-display-l-font-weight: var(--aiatella-font-weight-medium);
+  --aiatella-typography-display-l-letter-spacing: 0px;
   --aiatella-typography-heading-l-font-family: var(--aiatella-font-family-manrope);
   --aiatella-typography-heading-l-font-size: 28px;
   --aiatella-typography-heading-l-line-height: 36px;
   --aiatella-typography-heading-l-font-weight: var(--aiatella-font-weight-medium);
+  --aiatella-typography-heading-l-letter-spacing: 0px;
   --aiatella-typography-heading-m-font-family: var(--aiatella-font-family-manrope);
   --aiatella-typography-heading-m-font-size: 22px;
   --aiatella-typography-heading-m-line-height: 28px;
   --aiatella-typography-heading-m-font-weight: var(--aiatella-font-weight-medium);
+  --aiatella-typography-heading-m-letter-spacing: 0px;
   --aiatella-typography-heading-s-font-family: var(--aiatella-font-family-manrope);
   --aiatella-typography-heading-s-font-size: 20px;
   --aiatella-typography-heading-s-line-height: 28px;
   --aiatella-typography-heading-s-font-weight: var(--aiatella-font-weight-medium);
+  --aiatella-typography-heading-s-letter-spacing: 0px;
   --aiatella-typography-body-l-font-family: var(--aiatella-font-family-manrope);
   --aiatella-typography-body-l-font-size: 18px;
   --aiatella-typography-body-l-line-height: 26px;
   --aiatella-typography-body-l-font-weight: var(--aiatella-font-weight-medium);
+  --aiatella-typography-body-l-letter-spacing: 0px;
   --aiatella-typography-body-m-font-family: var(--aiatella-font-family-manrope);
   --aiatella-typography-body-m-font-size: 16px;
   --aiatella-typography-body-m-line-height: 22px;
   --aiatella-typography-body-m-font-weight: var(--aiatella-font-weight-medium);
+  --aiatella-typography-body-m-letter-spacing: 0px;
   --aiatella-typography-label-m-font-family: var(--aiatella-font-family-manrope);
   --aiatella-typography-label-m-font-size: 16px;
   --aiatella-typography-label-m-line-height: 16px;
   --aiatella-typography-label-m-font-weight: var(--aiatella-font-weight-medium);
+  --aiatella-typography-label-m-letter-spacing: 0px;
   --aiatella-typography-prose-m-font-family: var(--aiatella-font-family-inter);
   --aiatella-typography-prose-m-font-size: 16px;
   --aiatella-typography-prose-m-line-height: 20px;
   --aiatella-typography-prose-m-font-weight: var(--aiatella-font-weight-regular);
+  --aiatella-typography-prose-m-letter-spacing: -0.02em;
   --aiatella-typography-caption-m-font-family: var(--aiatella-font-family-manrope);
   --aiatella-typography-caption-m-font-size: 14px;
   --aiatella-typography-caption-m-line-height: 20px;
   --aiatella-typography-caption-m-font-weight: var(--aiatella-font-weight-medium);
+  --aiatella-typography-caption-m-letter-spacing: 0px;
   --aiatella-typography-caption-s-font-family: var(--aiatella-font-family-inter);
   --aiatella-typography-caption-s-font-size: 12px;
   --aiatella-typography-caption-s-line-height: 16px;
   --aiatella-typography-caption-s-font-weight: var(--aiatella-font-weight-regular);
+  --aiatella-typography-caption-s-letter-spacing: -0.02em;
   --aiatella-space-1: 4px;
   --aiatella-space-2: 8px;
   --aiatella-space-3: 12px;
@@ -109,6 +120,7 @@
   font-size: var(--aiatella-typography-display-xl-font-size);
   line-height: var(--aiatella-typography-display-xl-line-height);
   font-weight: var(--aiatella-typography-display-xl-font-weight);
+  letter-spacing: var(--aiatella-typography-display-xl-letter-spacing);
 }
 
 .aiatella-display-l {
@@ -116,6 +128,7 @@
   font-size: var(--aiatella-typography-display-l-font-size);
   line-height: var(--aiatella-typography-display-l-line-height);
   font-weight: var(--aiatella-typography-display-l-font-weight);
+  letter-spacing: var(--aiatella-typography-display-l-letter-spacing);
 }
 
 .aiatella-heading-l {
@@ -123,6 +136,7 @@
   font-size: var(--aiatella-typography-heading-l-font-size);
   line-height: var(--aiatella-typography-heading-l-line-height);
   font-weight: var(--aiatella-typography-heading-l-font-weight);
+  letter-spacing: var(--aiatella-typography-heading-l-letter-spacing);
 }
 
 .aiatella-heading-m {
@@ -130,6 +144,7 @@
   font-size: var(--aiatella-typography-heading-m-font-size);
   line-height: var(--aiatella-typography-heading-m-line-height);
   font-weight: var(--aiatella-typography-heading-m-font-weight);
+  letter-spacing: var(--aiatella-typography-heading-m-letter-spacing);
 }
 
 .aiatella-heading-s {
@@ -137,6 +152,7 @@
   font-size: var(--aiatella-typography-heading-s-font-size);
   line-height: var(--aiatella-typography-heading-s-line-height);
   font-weight: var(--aiatella-typography-heading-s-font-weight);
+  letter-spacing: var(--aiatella-typography-heading-s-letter-spacing);
 }
 
 .aiatella-body-l {
@@ -144,6 +160,7 @@
   font-size: var(--aiatella-typography-body-l-font-size);
   line-height: var(--aiatella-typography-body-l-line-height);
   font-weight: var(--aiatella-typography-body-l-font-weight);
+  letter-spacing: var(--aiatella-typography-body-l-letter-spacing);
 }
 
 .aiatella-body-m {
@@ -151,6 +168,7 @@
   font-size: var(--aiatella-typography-body-m-font-size);
   line-height: var(--aiatella-typography-body-m-line-height);
   font-weight: var(--aiatella-typography-body-m-font-weight);
+  letter-spacing: var(--aiatella-typography-body-m-letter-spacing);
 }
 
 .aiatella-label-m {
@@ -158,6 +176,7 @@
   font-size: var(--aiatella-typography-label-m-font-size);
   line-height: var(--aiatella-typography-label-m-line-height);
   font-weight: var(--aiatella-typography-label-m-font-weight);
+  letter-spacing: var(--aiatella-typography-label-m-letter-spacing);
 }
 
 .aiatella-prose-m {
@@ -165,6 +184,7 @@
   font-size: var(--aiatella-typography-prose-m-font-size);
   line-height: var(--aiatella-typography-prose-m-line-height);
   font-weight: var(--aiatella-typography-prose-m-font-weight);
+  letter-spacing: var(--aiatella-typography-prose-m-letter-spacing);
 }
 
 .aiatella-caption-m {
@@ -172,6 +192,7 @@
   font-size: var(--aiatella-typography-caption-m-font-size);
   line-height: var(--aiatella-typography-caption-m-line-height);
   font-weight: var(--aiatella-typography-caption-m-font-weight);
+  letter-spacing: var(--aiatella-typography-caption-m-letter-spacing);
 }
 
 .aiatella-caption-s {
@@ -179,6 +200,7 @@
   font-size: var(--aiatella-typography-caption-s-font-size);
   line-height: var(--aiatella-typography-caption-s-line-height);
   font-weight: var(--aiatella-typography-caption-s-font-weight);
+  letter-spacing: var(--aiatella-typography-caption-s-letter-spacing);
 }
 
 /* Focus ring. The source site has no global focus styling at all; this is new. */

@@ -49,27 +49,27 @@ export const tokens = {
   },
   typography: {
     display: {
-      xl: { fontFamily: ["Manrope", "Manrope Placeholder", "sans-serif"], fontSize: "64px", lineHeight: "80px", fontWeight: 500 },
-      l: { fontFamily: ["Manrope", "Manrope Placeholder", "sans-serif"], fontSize: "40px", lineHeight: "48px", fontWeight: 500 },
+      xl: { fontFamily: ["Manrope", "Manrope Placeholder", "sans-serif"], fontSize: "64px", lineHeight: "80px", fontWeight: 500, letterSpacing: "0px" },
+      l: { fontFamily: ["Manrope", "Manrope Placeholder", "sans-serif"], fontSize: "40px", lineHeight: "48px", fontWeight: 500, letterSpacing: "0px" },
     },
     heading: {
-      l: { fontFamily: ["Manrope", "Manrope Placeholder", "sans-serif"], fontSize: "28px", lineHeight: "36px", fontWeight: 500 },
-      m: { fontFamily: ["Manrope", "Manrope Placeholder", "sans-serif"], fontSize: "22px", lineHeight: "28px", fontWeight: 500 },
-      s: { fontFamily: ["Manrope", "Manrope Placeholder", "sans-serif"], fontSize: "20px", lineHeight: "28px", fontWeight: 500 },
+      l: { fontFamily: ["Manrope", "Manrope Placeholder", "sans-serif"], fontSize: "28px", lineHeight: "36px", fontWeight: 500, letterSpacing: "0px" },
+      m: { fontFamily: ["Manrope", "Manrope Placeholder", "sans-serif"], fontSize: "22px", lineHeight: "28px", fontWeight: 500, letterSpacing: "0px" },
+      s: { fontFamily: ["Manrope", "Manrope Placeholder", "sans-serif"], fontSize: "20px", lineHeight: "28px", fontWeight: 500, letterSpacing: "0px" },
     },
     body: {
-      l: { fontFamily: ["Manrope", "Manrope Placeholder", "sans-serif"], fontSize: "18px", lineHeight: "26px", fontWeight: 500 },
-      m: { fontFamily: ["Manrope", "Manrope Placeholder", "sans-serif"], fontSize: "16px", lineHeight: "22px", fontWeight: 500 },
+      l: { fontFamily: ["Manrope", "Manrope Placeholder", "sans-serif"], fontSize: "18px", lineHeight: "26px", fontWeight: 500, letterSpacing: "0px" },
+      m: { fontFamily: ["Manrope", "Manrope Placeholder", "sans-serif"], fontSize: "16px", lineHeight: "22px", fontWeight: 500, letterSpacing: "0px" },
     },
     label: {
-      m: { fontFamily: ["Manrope", "Manrope Placeholder", "sans-serif"], fontSize: "16px", lineHeight: "16px", fontWeight: 500 },
+      m: { fontFamily: ["Manrope", "Manrope Placeholder", "sans-serif"], fontSize: "16px", lineHeight: "16px", fontWeight: 500, letterSpacing: "0px" },
     },
     prose: {
-      m: { fontFamily: ["Inter", "Inter Placeholder", "sans-serif"], fontSize: "16px", lineHeight: "20px", fontWeight: 400 },
+      m: { fontFamily: ["Inter", "Inter Placeholder", "sans-serif"], fontSize: "16px", lineHeight: "20px", fontWeight: 400, letterSpacing: "-0.02em" },
     },
     caption: {
-      m: { fontFamily: ["Manrope", "Manrope Placeholder", "sans-serif"], fontSize: "14px", lineHeight: "20px", fontWeight: 500 },
-      s: { fontFamily: ["Inter", "Inter Placeholder", "sans-serif"], fontSize: "12px", lineHeight: "16px", fontWeight: 400 },
+      m: { fontFamily: ["Manrope", "Manrope Placeholder", "sans-serif"], fontSize: "14px", lineHeight: "20px", fontWeight: 500, letterSpacing: "0px" },
+      s: { fontFamily: ["Inter", "Inter Placeholder", "sans-serif"], fontSize: "12px", lineHeight: "16px", fontWeight: 400, letterSpacing: "-0.02em" },
     },
   },
   space: {

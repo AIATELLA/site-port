@@ -51,20 +51,18 @@ by a script in this repository's verification run (see the bottom of this docume
 |---|---|---|
 | `color.brand.red` `#d10000` | **5.66:1** | **PASS** |
 | `color.border.strong` `#b8b8b8` | **1.98:1** | **FAIL** |
-| `#999` (`#999999`), used directly in `contact.css` and `waitlist.css` as `--framer-input-icon-color`, not a named token | **2.85:1** | **FAIL** |
+| `#999` / `rgb(153, 153, 153)`, used directly in `contact.css` and `waitlist.css` as `--framer-input-icon-color`, not a named token | **2.85:1** | **FAIL** |
 
 **Read this plainly: `color.border.strong` and `#999` fail WCAG AA and must never be
 used to render text.** They exist only as decorative borders / icon tints on a
 non-text element. `color.brand.red` is the only one of these three that passes AA
 and may carry text (e.g. links, labels) on a white background.
 
-> Note on the `#999` count: the design spec that commissioned this system states
-> `#999` appears "16 times" in the source CSS. Directly measuring `assets/css/*.css`
-> finds the literal string `#999` on 5 lines (2 in `contact.css`, 3 in `waitlist.css`),
-> covering 12 comma-separated CSS selectors between them (`--framer-input-icon-color`
-> on Framer's generated input-icon classes). The 2.85:1 ratio itself is confirmed
-> exactly. The occurrence count could not be reconciled to 16 and is flagged here
-> rather than silently repeated.
+> `#999` occurrence count: this colour appears **21 times** in `assets/css/*.css` —
+> 5 as the hex shorthand `#999` and 16 as `rgb(153, 153, 153)`, both in
+> `contact.css` and `waitlist.css` as `--framer-input-icon-color`. The 2.85:1
+> contrast ratio and AA-FAIL verdict are unaffected by which notation is used —
+> both encode the identical colour.
 
 **Known likely AA failure, flagged for Phase C:** the footer's legal links render as
 low-contrast grey text on a dark red background. This was not exhaustively measured
@@ -94,19 +92,27 @@ Extracted from 11 distinct `framer-styles-preset-*` hash classes across
 `assets/css/*.css`. Class names below are what `design.css` generates
 (`.aiatella-<step>`).
 
-| Step | Class | Family | Size / line-height | Weight | Use |
-|---|---|---|---|---|---|
-| `display.xl` | `.aiatella-display-xl` | Manrope | 64 / 80 | 500 | Largest hero headline |
-| `display.l` | `.aiatella-display-l` | Manrope | 40 / 48 | 500 | Secondary hero headline |
-| `heading.l` | `.aiatella-heading-l` | Manrope | 28 / 36 | 500 | Section heading |
-| `heading.m` | `.aiatella-heading-m` | Manrope | 22 / 28 | 500 | Sub-section heading |
-| `heading.s` | `.aiatella-heading-s` | Manrope | 20 / 28 | 500 | Card / component heading |
-| `body.l` | `.aiatella-body-l` | Manrope | 18 / 26 | 500 | Lead paragraph |
-| `body.m` | `.aiatella-body-m` | Manrope | 16 / 22 | 500 | Standard body copy |
-| `label.m` | `.aiatella-label-m` | Manrope | 16 / 16 | 500 | Tight single-line labels (buttons, form labels) |
-| `prose.m` | `.aiatella-prose-m` | Inter | 16 / 20 | 400 | Long-form reading copy (blog body) |
-| `caption.m` | `.aiatella-caption-m` | Manrope | 14 / 20 | 500 | Small UI caption |
-| `caption.s` | `.aiatella-caption-s` | Inter | 12 / 16 | 400 | Smallest caption / metadata |
+| Step | Class | Family | Size / line-height | Weight | Letter-spacing | Use |
+|---|---|---|---|---|---|---|
+| `display.xl` | `.aiatella-display-xl` | Manrope | 64 / 80 | 500 | 0px | Largest hero headline |
+| `display.l` | `.aiatella-display-l` | Manrope | 40 / 48 | 500 | 0px | Secondary hero headline |
+| `heading.l` | `.aiatella-heading-l` | Manrope | 28 / 36 | 500 | 0px | Section heading |
+| `heading.m` | `.aiatella-heading-m` | Manrope | 22 / 28 | 500 | 0px | Sub-section heading |
+| `heading.s` | `.aiatella-heading-s` | Manrope | 20 / 28 | 500 | 0px | Card / component heading |
+| `body.l` | `.aiatella-body-l` | Manrope | 18 / 26 | 500 | 0px | Lead paragraph |
+| `body.m` | `.aiatella-body-m` | Manrope | 16 / 22 | 500 | 0px | Standard body copy |
+| `label.m` | `.aiatella-label-m` | Manrope | 16 / 16 | 500 | 0px | Tight single-line labels (buttons, form labels) |
+| `prose.m` | `.aiatella-prose-m` | Inter | 16 / 20 | 400 | **−0.02em** | Long-form reading copy (blog body) |
+| `caption.m` | `.aiatella-caption-m` | Manrope | 14 / 20 | 500 | 0px | Small UI caption |
+| `caption.s` | `.aiatella-caption-s` | Inter | 12 / 16 | 400 | **−0.02em** | Smallest caption / metadata |
+
+All nine Manrope steps declare letter-spacing explicitly as `0px` in the source CSS
+(not simply absent — Framer writes it out). Only the two Inter steps, `prose.m` and
+`caption.s`, carry non-zero tracking at `-0.02em`. Because `prose.m` and `caption.s`
+are the body-copy and caption styles — i.e. most of the site's running text — this
+is not a rounding-error-sized detail: every `.aiatella-*` utility class sets
+`letter-spacing` together with family/size/line-height/weight, so using the class
+reproduces the source's tracking exactly with no manual override needed.
 
 **A twelfth preset, `7964ex`, is not on this list on purpose.** It's the class Framer
 applies to footer links. It declares no font-family, size, line-height or weight at
@@ -290,8 +296,9 @@ of work that follows this one.
    `.aiatella-display-l`, `.aiatella-heading-l`, `.aiatella-heading-m`,
    `.aiatella-heading-s`, `.aiatella-body-l`, `.aiatella-body-m`,
    `.aiatella-label-m`, `.aiatella-prose-m`, `.aiatella-caption-m`,
-   `.aiatella-caption-s`. Each one sets font-family, size, line-height and weight
-   together — never mix-and-match a class with a manual `font-size` override.
+   `.aiatella-caption-s`. Each one sets font-family, size, line-height, weight and
+   letter-spacing together — never mix-and-match a class with a manual `font-size`
+   or `letter-spacing` override.
 4. **Reach for these custom properties** for everything else: colours
    (`var(--aiatella-color-brand-red)`, `var(--aiatella-color-ink)`, …), spacing
    (`var(--aiatella-space-4)`, …), radii (`var(--aiatella-radius-m)`, …), and motion
@@ -328,7 +335,8 @@ This document's numeric claims were checked by script, not eyeballed:
   every value matches byte-for-byte (case-insensitive hex).
 - **Typography fidelity:** all 12 `framer-styles-preset-*` classes (11 scale steps
   + `7964ex`) were located in `assets/css/*.css` and their family/size/line-height/
-  weight match this document and `tokens.json` exactly.
+  weight/letter-spacing match this document and `tokens.json` exactly, checked
+  property-by-property.
 - **Contrast:** the three ratios in section 1 were recomputed from the WCAG formula
   independently of this document's prose and matched exactly (5.66:1, 1.98:1,
   2.85:1) with the stated AA verdicts.

@@ -29,6 +29,7 @@ def organization():
         "name": "AIATELLA", "legalName": "AIATELLA Oy", "url": pages.SITE + "/",
         "logo": LOGO, "foundingDate": "2022",
         "email": "contact@aiatella.com",
+        "sameAs": ["https://www.linkedin.com/company/aiatella/"],
         "address": dict({"@type": "PostalAddress"}, **pages.ORG_ADDRESS),
         "description": ("AIATELLA builds explainable AI that automates cardiovascular "
                         "image measurement from MRI, CT and ultrasound."),

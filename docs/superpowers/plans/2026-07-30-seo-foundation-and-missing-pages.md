@@ -1461,38 +1461,50 @@ Expected: a non-zero total. (Leave the `data-framer-name="Copyright © 2023…"`
 
 Each page has **three** `footer__root` divs — desktop, tablet and phone breakpoint variants, only one of which renders at a given viewport. This mirrors the existing `<nav>` handling, which is already 3 per page.
 
-Change the **tag** rather than wrapping. A `div`→`footer` swap is visually inert (both are `display:block`) and every CSS rule here is class-based (`.footer__root`, `.footer__inner`, …), so styling is untouched. Wrapping instead would add a redundant element and risk disturbing the flex layout.
+Change the **tag name only**, and never reconstruct the attribute list.
+
+**This is the trap.** The footer opening tag is not just a class — it carries `data-framer-name` and, critically, an inline `style` holding the footer's black-to-dark-red gradient:
+
+```
+<div class="footer … footer__root footer--desktop" data-framer-name="Desktop"
+     style="background:linear-gradient(116deg, var(--token-…) -53%, var(--token-…) 99%);width:100%">
+```
+
+Any script that matches `<div (class="[^"]*")` and re-emits `'<footer ' + class + '>'` will close the tag early and leave `data-framer-name=… style=…>` dangling as stray text — destroying the gradient on all 19 pages. Replace the 4 characters `<div` with `<footer` in place instead, and locate the matching `</div>` by depth counting.
+
+The script below was written and verified against real pages before being put in this plan: 3 conversions per file, gradient and `data-framer-name` preserved, tags balanced, no orphaned `>`, and `html.parser` reports zero stray closes and zero unclosed depth.
 
 ```bash
 python - <<'EOF'
-import glob,re
-total=0
-for f in glob.glob('*.html')+glob.glob('blog-details/*.html'):
-    s=open(f,encoding='utf-8',newline='').read()
-    if '<footer' in s: 
-        print(f"{f:60} already has <footer>, skipped"); continue
-    # opening tags: <div class="... footer__root ..."> -> <footer class="...">
-    opens=[m.start() for m in re.finditer(r'<div (class="[^"]*\bfooter__root\b[^"]*")',s)]
+import re, glob
+
+def convert(path):
+    with open(path, encoding="utf-8", newline="") as fh:
+        s = fh.read()
+    if "<footer" in s:
+        return 0, "already has <footer>"
+    opens = [m.start() for m in re.finditer(r'<div(?=[^>]*footer__root)', s)]
     if not opens:
-        print(f"{f:60} NO footer__root FOUND"); continue
-    # walk each from the end backwards so offsets stay valid
-    for i in reversed(opens):
-        m=re.match(r'<div (class="[^"]*")',s[i:])
-        # find matching </div> by depth counting
-        depth=0; j=None
-        for t in re.finditer(r'<div\b|</div>',s[i:]):
-            depth += 1 if t.group(0)=='<div' else -1
-            if depth==0:
-                j=i+t.start(); break
-        if j is None:
-            print(f"{f:60} UNBALANCED at {i}"); continue
-        s = s[:j] + '</footer>' + s[j+len('</div>'):]
-        s = s[:i] + '<footer ' + m.group(1) + '>' + s[i+m.end():]
-    n=s.count('<footer ')
-    open(f,'w',encoding='utf-8',newline='').write(s)
-    total+=1
-    print(f"{f:60} converted {n}")
-print("files updated:", total)
+        return 0, "no footer__root found"
+    n = 0
+    for i in reversed(opens):                     # end-first keeps earlier offsets valid
+        depth = 0; close = None
+        for t in re.finditer(r'<div|</div\s*>', s[i:]):
+            depth += 1 if t.group(0).startswith("<div") else -1
+            if depth == 0:
+                close, close_end = i + t.start(), i + t.end(); break
+        if close is None:
+            return -1, "UNBALANCED at offset %d" % i
+        s = s[:close] + "</footer>" + s[close_end:]   # close first (later offset)
+        s = s[:i] + "<footer" + s[i+4:]               # then only the tag NAME
+        n += 1
+    with open(path, "w", encoding="utf-8", newline="") as fh:
+        fh.write(s)
+    return n, "ok"
+
+for f in sorted(glob.glob("*.html")) + sorted(glob.glob("blog-details/*.html")):
+    n, msg = convert(f)
+    print(f"  {f:34} converted={n:2} {msg}")
 EOF
 ```
 Expected: 19 files, each reporting `converted 3`.

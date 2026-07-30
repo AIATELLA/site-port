@@ -89,7 +89,7 @@ _POSTS = [
      "2025-06"),
     ("mtv3-features-aiatella",
      "MTV3: Finnish invention detects dangerous stenosis",
-     "Finland's MTV3 covers AIATELLA's AI screening, which detects and quantifies dangerous carotid artery narrowing in minutes rather than hours.",
+     "Finland's MTV3 reports on AIATELLA's AI screening, which measures dangerous carotid artery narrowing in minutes rather than hours.",
      "2025-07"),
     ("aiatella-instrumentarium",
      "AIATELLA receives Instrumentarium science grant",

@@ -77,7 +77,7 @@ The 17 UUID tokens map to 16 semantic names (two source tokens are both `#fff`).
 | `color.brand.red` | `#d10000` | `8f13e9a5` | **5.6:1 on white — passes AA for text** |
 | `color.brand.red.deep` | `#8a0000` | `94818a51` | gradient partner |
 
-**Accessibility, recorded in the system itself:** `#d10000` passes WCAG AA on white at 5.6:1. `#b8b8b8` (2.0:1) and the `#999` used 16 times elsewhere in the CSS (2.85:1) **fail AA** and must not carry text. The footer legal links are low-contrast grey on dark red and are a likely AA failure — flagged for Phase C.
+**Accessibility, recorded in the system itself:** `#d10000` passes WCAG AA on white at 5.66:1. `#b8b8b8` (1.98:1) and the `#999` used **21 times** elsewhere in the CSS — 5 as `#999`, 16 as `rgb(153, 153, 153)` — (2.85:1) **fail AA** and must not carry text. The footer legal links are low-contrast grey on dark red and are a likely AA failure — flagged for Phase C.
 
 ### 3.2 Typography
 
@@ -98,6 +98,8 @@ Two families: **Manrope** for display and UI, **Inter** for long-form and captio
 | `caption.s` | Inter | 12 / 16 | 400 | `10g3946` |
 
 Available weights: Manrope 500/600/700; Inter 400/500/700. Preset `7964ex` (used by footer links) declares no type properties and is inherit-only — record it as a link style, not a scale step.
+
+**Letter-spacing is part of a type step.** Measured: exactly the two Inter presets carry `letter-spacing: -.02em` (`99gjg` → `prose.m`, `10g3946` → `caption.s`); all nine Manrope steps are explicitly `0px`. Since those two are the body and caption styles — most of the running text on the site — a type step that omitted tracking would render incorrectly and force Phase C to special-case it outside the system. So a type step is family, size, line-height, weight **and letter-spacing**. Nothing else in the source varies, so nothing else is included.
 
 ### 3.3 Spacing
 

@@ -10,7 +10,7 @@
 
 `site-port` is a Framer export destined to replace www.aiatella.com. Its design layer is machine-generated and unusable as a source of truth:
 
-- **17 design tokens**, all opaque UUIDs — `--token-6fa10ce0-ad77-4ae2-9539-cc850356aaa1: #000`. Two are exact duplicates (both `#fff`).
+- **18 design tokens**, all opaque UUIDs — `--token-6fa10ce0-ad77-4ae2-9539-cc850356aaa1: #000`. Two are exact duplicates (both `#fff`), and one (`34f2fca6`, `#1d1f13`, the mobile-nav hamburger bars) is **declared nowhere at all**, so its inline fallback has always been the value that rendered. Found during Phase B, not by the initial audit.
 - **2,932 token references**, of which **2,767 sit in HTML inline styles**, not CSS.
 - **12 typography presets** hidden in hash-named `framer-styles-preset-*` classes. A coherent scale exists; it has no names.
 - **90 identical selector+body CSS rules** duplicated across 2+ page files ≈ **44 KB** of pure duplication.
@@ -56,7 +56,7 @@ All values measured from the codebase, not invented.
 
 ### 3.1 Colour
 
-The 17 UUID tokens map to 16 semantic names (two source tokens are both `#fff`).
+The 18 UUID tokens map to 17 semantic names (two source tokens are both `#fff`).
 
 | Semantic name | Value | Source token suffix | Notes |
 |---|---|---|---|
@@ -76,6 +76,7 @@ The 17 UUID tokens map to 16 semantic names (two source tokens are both `#fff`).
 | `color.border.strong` | `#b8b8b8` | `f2a1dab5` | **2.0:1 on white — decorative only, never text** |
 | `color.brand.red` | `#d10000` | `8f13e9a5` | **5.6:1 on white — passes AA for text** |
 | `color.brand.red.deep` | `#8a0000` | `94818a51` | gradient partner |
+| `color.icon.nav` | `#1d1f13` | `34f2fca6` | mobile-nav iconography. **Never declared in source CSS** — its inline fallback always rendered. Distinct from `color.ink.warm` (`#1c1313`) and the logo's `#231f20`; three different values, do not merge |
 
 **Accessibility, recorded in the system itself:** `#d10000` passes WCAG AA on white at 5.66:1. `#b8b8b8` (1.98:1) and the `#999` used **21 times** elsewhere in the CSS — 5 as `#999`, 16 as `rgb(153, 153, 153)` — (2.85:1) **fail AA** and must not carry text. The footer legal links are low-contrast grey on dark red and are a likely AA failure — flagged for Phase C.
 

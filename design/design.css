@@ -1,0 +1,188 @@
+/*
+ * GENERATED FILE — do not hand-edit.
+ * Source of truth: design/tokens.json. Regenerate with:
+ *     python design/build-tokens.py
+ *
+ * AIATELLA design system — standalone stylesheet.
+ * Drop this single file into any project to get AIATELLA's colour
+ * palette, type scale, spacing, radii, motion and focus ring. Every
+ * var(--aiatella-*) referenced below is defined in this same file.
+ *
+ * Font families are referenced by name (Manrope, Inter) with system
+ * fallbacks. No @font-face rules are declared here — load the actual
+ * font files yourself, or the fallback stack renders instead.
+ */
+
+:root {
+  --aiatella-color-ink: #000000;
+  --aiatella-color-ink-muted: #000000b3;
+  --aiatella-color-ink-overlay: #0000000d;
+  --aiatella-color-ink-warm: #1c1313;
+  --aiatella-color-surface: #ffffff;
+  --aiatella-color-surface-muted: #ffffffb3;
+  --aiatella-color-surface-overlay: #ffffff1a;
+  --aiatella-color-surface-overlay-subtle: #ffffff14;
+  --aiatella-color-surface-overlay-strong: #ffffff66;
+  --aiatella-color-surface-subtle: #f7f7f7;
+  --aiatella-color-surface-subtle-muted: #f7f7f7b3;
+  --aiatella-color-surface-subtle-overlay: #f7f7f766;
+  --aiatella-color-border: #dbdbdb;
+  --aiatella-color-border-strong: #b8b8b8;
+  --aiatella-color-brand-red: #d10000;
+  --aiatella-color-brand-red-deep: #8a0000;
+  --aiatella-font-family-manrope: "Manrope", "Manrope Placeholder", sans-serif;
+  --aiatella-font-family-inter: "Inter", "Inter Placeholder", sans-serif;
+  --aiatella-font-weight-regular: 400;
+  --aiatella-font-weight-medium: 500;
+  --aiatella-font-weight-semibold: 600;
+  --aiatella-font-weight-bold: 700;
+  --aiatella-typography-display-xl-font-family: var(--aiatella-font-family-manrope);
+  --aiatella-typography-display-xl-font-size: 64px;
+  --aiatella-typography-display-xl-line-height: 80px;
+  --aiatella-typography-display-xl-font-weight: var(--aiatella-font-weight-medium);
+  --aiatella-typography-display-l-font-family: var(--aiatella-font-family-manrope);
+  --aiatella-typography-display-l-font-size: 40px;
+  --aiatella-typography-display-l-line-height: 48px;
+  --aiatella-typography-display-l-font-weight: var(--aiatella-font-weight-medium);
+  --aiatella-typography-heading-l-font-family: var(--aiatella-font-family-manrope);
+  --aiatella-typography-heading-l-font-size: 28px;
+  --aiatella-typography-heading-l-line-height: 36px;
+  --aiatella-typography-heading-l-font-weight: var(--aiatella-font-weight-medium);
+  --aiatella-typography-heading-m-font-family: var(--aiatella-font-family-manrope);
+  --aiatella-typography-heading-m-font-size: 22px;
+  --aiatella-typography-heading-m-line-height: 28px;
+  --aiatella-typography-heading-m-font-weight: var(--aiatella-font-weight-medium);
+  --aiatella-typography-heading-s-font-family: var(--aiatella-font-family-manrope);
+  --aiatella-typography-heading-s-font-size: 20px;
+  --aiatella-typography-heading-s-line-height: 28px;
+  --aiatella-typography-heading-s-font-weight: var(--aiatella-font-weight-medium);
+  --aiatella-typography-body-l-font-family: var(--aiatella-font-family-manrope);
+  --aiatella-typography-body-l-font-size: 18px;
+  --aiatella-typography-body-l-line-height: 26px;
+  --aiatella-typography-body-l-font-weight: var(--aiatella-font-weight-medium);
+  --aiatella-typography-body-m-font-family: var(--aiatella-font-family-manrope);
+  --aiatella-typography-body-m-font-size: 16px;
+  --aiatella-typography-body-m-line-height: 22px;
+  --aiatella-typography-body-m-font-weight: var(--aiatella-font-weight-medium);
+  --aiatella-typography-label-m-font-family: var(--aiatella-font-family-manrope);
+  --aiatella-typography-label-m-font-size: 16px;
+  --aiatella-typography-label-m-line-height: 16px;
+  --aiatella-typography-label-m-font-weight: var(--aiatella-font-weight-medium);
+  --aiatella-typography-prose-m-font-family: var(--aiatella-font-family-inter);
+  --aiatella-typography-prose-m-font-size: 16px;
+  --aiatella-typography-prose-m-line-height: 20px;
+  --aiatella-typography-prose-m-font-weight: var(--aiatella-font-weight-regular);
+  --aiatella-typography-caption-m-font-family: var(--aiatella-font-family-manrope);
+  --aiatella-typography-caption-m-font-size: 14px;
+  --aiatella-typography-caption-m-line-height: 20px;
+  --aiatella-typography-caption-m-font-weight: var(--aiatella-font-weight-medium);
+  --aiatella-typography-caption-s-font-family: var(--aiatella-font-family-inter);
+  --aiatella-typography-caption-s-font-size: 12px;
+  --aiatella-typography-caption-s-line-height: 16px;
+  --aiatella-typography-caption-s-font-weight: var(--aiatella-font-weight-regular);
+  --aiatella-space-1: 4px;
+  --aiatella-space-2: 8px;
+  --aiatella-space-3: 12px;
+  --aiatella-space-4: 16px;
+  --aiatella-space-5: 20px;
+  --aiatella-space-6: 24px;
+  --aiatella-space-8: 32px;
+  --aiatella-space-10: 40px;
+  --aiatella-space-16: 64px;
+  --aiatella-space-20: 80px;
+  --aiatella-space-32: 128px;
+  --aiatella-space-legacy-10: 10px;
+  --aiatella-space-legacy-26: 104px;
+  --aiatella-radius-m: 20px;
+  --aiatella-radius-l: 40px;
+  --aiatella-radius-pill: 100px;
+  --aiatella-breakpoint-tablet: 860px;
+  --aiatella-breakpoint-desktop: 1200px;
+  --aiatella-motion-easing-standard: cubic-bezier(0.44, 0, 0.56, 1);
+  --aiatella-motion-duration-fast: 150ms;
+  --aiatella-focus-ring: inset 0px 0px 0px 5px var(--aiatella-color-brand-red);
+}
+
+/* Type-scale utility classes: family, size, line-height and weight together. */
+.aiatella-display-xl {
+  font-family: var(--aiatella-typography-display-xl-font-family);
+  font-size: var(--aiatella-typography-display-xl-font-size);
+  line-height: var(--aiatella-typography-display-xl-line-height);
+  font-weight: var(--aiatella-typography-display-xl-font-weight);
+}
+
+.aiatella-display-l {
+  font-family: var(--aiatella-typography-display-l-font-family);
+  font-size: var(--aiatella-typography-display-l-font-size);
+  line-height: var(--aiatella-typography-display-l-line-height);
+  font-weight: var(--aiatella-typography-display-l-font-weight);
+}
+
+.aiatella-heading-l {
+  font-family: var(--aiatella-typography-heading-l-font-family);
+  font-size: var(--aiatella-typography-heading-l-font-size);
+  line-height: var(--aiatella-typography-heading-l-line-height);
+  font-weight: var(--aiatella-typography-heading-l-font-weight);
+}
+
+.aiatella-heading-m {
+  font-family: var(--aiatella-typography-heading-m-font-family);
+  font-size: var(--aiatella-typography-heading-m-font-size);
+  line-height: var(--aiatella-typography-heading-m-line-height);
+  font-weight: var(--aiatella-typography-heading-m-font-weight);
+}
+
+.aiatella-heading-s {
+  font-family: var(--aiatella-typography-heading-s-font-family);
+  font-size: var(--aiatella-typography-heading-s-font-size);
+  line-height: var(--aiatella-typography-heading-s-line-height);
+  font-weight: var(--aiatella-typography-heading-s-font-weight);
+}
+
+.aiatella-body-l {
+  font-family: var(--aiatella-typography-body-l-font-family);
+  font-size: var(--aiatella-typography-body-l-font-size);
+  line-height: var(--aiatella-typography-body-l-line-height);
+  font-weight: var(--aiatella-typography-body-l-font-weight);
+}
+
+.aiatella-body-m {
+  font-family: var(--aiatella-typography-body-m-font-family);
+  font-size: var(--aiatella-typography-body-m-font-size);
+  line-height: var(--aiatella-typography-body-m-line-height);
+  font-weight: var(--aiatella-typography-body-m-font-weight);
+}
+
+.aiatella-label-m {
+  font-family: var(--aiatella-typography-label-m-font-family);
+  font-size: var(--aiatella-typography-label-m-font-size);
+  line-height: var(--aiatella-typography-label-m-line-height);
+  font-weight: var(--aiatella-typography-label-m-font-weight);
+}
+
+.aiatella-prose-m {
+  font-family: var(--aiatella-typography-prose-m-font-family);
+  font-size: var(--aiatella-typography-prose-m-font-size);
+  line-height: var(--aiatella-typography-prose-m-line-height);
+  font-weight: var(--aiatella-typography-prose-m-font-weight);
+}
+
+.aiatella-caption-m {
+  font-family: var(--aiatella-typography-caption-m-font-family);
+  font-size: var(--aiatella-typography-caption-m-font-size);
+  line-height: var(--aiatella-typography-caption-m-line-height);
+  font-weight: var(--aiatella-typography-caption-m-font-weight);
+}
+
+.aiatella-caption-s {
+  font-family: var(--aiatella-typography-caption-s-font-family);
+  font-size: var(--aiatella-typography-caption-s-font-size);
+  line-height: var(--aiatella-typography-caption-s-line-height);
+  font-weight: var(--aiatella-typography-caption-s-font-weight);
+}
+
+/* Focus ring. The source site has no global focus styling at all; this is new. */
+:focus-visible {
+  outline: none;
+  box-shadow: var(--aiatella-focus-ring);
+}

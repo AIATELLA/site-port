@@ -1,22 +1,55 @@
-/* Aorta hero animations */
-@keyframes float-ct-scan {
-  0%, 100% { transform: perspective(5000px) translate(0px, 0px); }
-  50% { transform: perspective(5000px) translate(-10px, 10px); }
+/* Hero floating layers.
+   Mirrors the Framer "loop" effect used on aiatella.com: every layer shares one
+   tween (duration 3.5s, ease [.44 0 .56 1], repeatType "mirror", no delay), so
+   the three images move as a single unit — 3.5s out, 3.5s back, 7s round trip.
+   Only the travel distance differs per layer, which is what makes the stack
+   close up and fan open again. */
+@keyframes hero-float-near {
+  to { transform: perspective(5000px) translate(-10px, 10px); }
 }
-@keyframes float-bg-card {
-  0%, 100% { transform: perspective(5000px) translate(0px, 0px); }
-  50% { transform: perspective(5000px) translate(-25px, 25px); }
+@keyframes hero-float-mid {
+  to { transform: perspective(5000px) translate(-25px, 25px); }
 }
-@keyframes float-aorta {
-  0%, 100% { transform: translate(0px, 0px); }
-  50% { transform: translate(-55px, 55px); }
+@keyframes hero-float-far {
+  to { transform: translate(-55px, 55px); }
 }
+
 .hero__ct-scan {
-  animation: float-ct-scan 4s ease-in-out infinite !important;
+  animation: hero-float-near 3.5s cubic-bezier(0.44, 0, 0.56, 1) 0s infinite alternate !important;
 }
 .hero__card {
-  animation: float-bg-card 5s ease-in-out infinite !important;
+  animation: hero-float-mid 3.5s cubic-bezier(0.44, 0, 0.56, 1) 0s infinite alternate !important;
 }
 .hero__aorta {
-  animation: float-aorta 3.5s ease-in-out infinite !important;
+  animation: hero-float-far 3.5s cubic-bezier(0.44, 0, 0.56, 1) 0s infinite alternate !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__ct-scan,
+  .hero__card,
+  .hero__aorta {
+    animation: none !important;
+  }
+}
+
+/* The redline's trailing fade shipped as a red-to-white gradient painted on the
+   line itself, so it slid along with the line and the tail's density changed on
+   every scroll step. The fade is instead expressed as a mask on the same element
+   with the translation cancelled out in mask-position, which pins the gradient to
+   the container: the line sweeps through a stationary fade rather than dragging
+   it along. --redline-shift is written by scroll-animations.js each frame.
+   At rest (shift 0) this renders identically to the original gradient. */
+.after-hero__redline-dot {
+  background: var(--token-8f13e9a5-235b-419e-8215-8e05e37c6f1d, #d10000) !important;
+}
+
+.after-hero__redline {
+  -webkit-mask-image: linear-gradient(90deg, #000 0%, transparent 100%);
+  mask-image: linear-gradient(90deg, #000 0%, transparent 100%);
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: calc(-1 * var(--redline-shift, 0px)) 0;
+  mask-position: calc(-1 * var(--redline-shift, 0px)) 0;
 }

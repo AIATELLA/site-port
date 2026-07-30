@@ -54,8 +54,9 @@ def render(slug, eyebrow, headline, uri):
                     "--screenshot=" + os.path.abspath(dest),
                     "file:///" + tmp.replace("\\", "/")],
                    check=True, capture_output=True, timeout=90)
-    if not os.path.exists(dest) or os.path.getsize(dest) < 1000:
-        raise SystemExit("failed to render %s: file missing or trivial" % slug)
+    if not os.path.exists(dest) or os.path.getsize(dest) < 5000:
+        raise SystemExit("failed to render %s: file missing or blank (%d bytes)"
+                         % (slug, os.path.getsize(dest) if os.path.exists(dest) else 0))
     return dest
 
 

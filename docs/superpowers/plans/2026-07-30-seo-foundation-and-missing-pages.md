@@ -796,10 +796,46 @@ Expected: no `h1` complaints for these five files. `<footer>` complaints remain 
 
 - [ ] **Step 4: Confirm visually inert**
 
-Framer sizes headings via `--framer-font-size` custom properties on the element, not tag selectors, so this should render identically. Confirm no tag-based heading rule exists:
+Framer sizes headings via `--framer-font-size` custom properties carried by a preset **class** on the element, not by tag selectors, so this renders identically.
 
-Run: `grep -nE '(^|[^-a-z])h2\s*[,{]' assets/css/*.css | head`
-Expected: no output. If any rule targets `h2` by tag, stop and add an equivalent `h1` rule before proceeding.
+**Do not use a bare grep for `h2` in selectors as a gate — it produces a false alarm.** Six stylesheets contain rules like:
+
+```
+.page__scope-4 .framer-styles-preset-1gy43jf:not(.rich-text-wrapper),
+.page__scope-4 .framer-styles-preset-1gy43jf.rich-text-wrapper h2
+{ --framer-font-size:28px; ... }
+```
+
+That is two selectors sharing one block. Branch A matches the element carrying the preset class and names no tag at all; branch B matches an `h2` *descendant of* a `.rich-text-wrapper`. Verified against these five pages: every target heading carries the preset class **directly on the `h2`**, and `rich-text-wrapper` appears **zero times** in any of them. So branch A does the styling, branch B cannot match, and the tag swap is inert.
+
+Prove it empirically instead — a rendered diff, not a selector grep. With the local server running:
+
+```bash
+CHROME="/c/Program Files/Google/Chrome/Application/chrome.exe"
+shoot () {  # shoot <outdir>
+  mkdir -p "$1"
+  for p in approach solutions company blog contact; do
+    for wh in "1440,2400 desktop" "390,2400 mobile"; do
+      set -- $wh
+      "$CHROME" --headless=new --disable-gpu --hide-scrollbars \
+        --force-device-scale-factor=1 --window-size="$1" --virtual-time-budget=4000 \
+        --screenshot="$(pwd)/$1x/$p.$2.png" "http://127.0.0.1:8000/$p.html" 2>/dev/null
+    done
+  done
+}
+git stash push -- approach.html blog.html company.html contact.html solutions.html
+shoot /tmp/h1-before
+git stash pop
+shoot /tmp/h1-after
+python - <<'EOF'
+import glob,os,hashlib
+for a in sorted(glob.glob('/tmp/h1-before/*.png')):
+    b=a.replace('before','after')
+    same=os.path.exists(b) and hashlib.sha256(open(a,'rb').read()).digest()==hashlib.sha256(open(b,'rb').read()).digest()
+    print(("SAME " if same else "DIFF "), os.path.basename(a))
+EOF
+```
+Expected: every line `SAME`. Any `DIFF` means investigate that page before committing. Keep the PNGs out of the repo — do not commit them.
 
 - [ ] **Step 5: Apply the one on-page copy change the comms strategy prescribes**
 

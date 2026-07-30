@@ -1,0 +1,8 @@
+# Generated site output is written by tools/seo/*.py with explicit newline
+# handling (newline='' on read/write). core.autocrlf=true was rewriting line
+# endings on every checkout/re-run with no semantic change, showing 19 files
+# as modified. Disable git's text-attribute line-ending conversion for the
+# generated file types so re-running the generators leaves a clean tree.
+*.html -text
+*.css -text
+*.js -text

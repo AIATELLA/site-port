@@ -40,7 +40,7 @@
    it along. --redline-shift is written by scroll-animations.js each frame.
    At rest (shift 0) this renders identically to the original gradient. */
 .after-hero__redline-dot {
-  background: var(--token-8f13e9a5-235b-419e-8215-8e05e37c6f1d, #d10000) !important;
+  background: var(--aiatella-color-brand-red, #d10000) !important;
 }
 
 .after-hero__redline {

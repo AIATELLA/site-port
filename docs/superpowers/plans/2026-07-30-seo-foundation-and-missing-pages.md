@@ -1245,7 +1245,6 @@ Brand: black `#000`, white `#fff`, red `#d10000` (5.6:1 on white, passes AA), gr
   .foot { display:flex; align-items:center; justify-content:space-between; }
   .word { font-size:30px; font-weight:700; letter-spacing:.22em; }
   .mark { height:64px; opacity:.9; }
-  .mark path { stroke:#fff !important; }
 </style>
 <div class="rule"></div>
 <div class="eyebrow" id="eyebrow">Cardiovascular AI</div>
@@ -1308,11 +1307,22 @@ def render(slug, eyebrow, headline, uri):
     with open(tmp, "w", encoding="utf-8") as fh:
         fh.write(html)
     dest = os.path.join(OUT, slug + ".png")
+    # Clear the destination first: headless Chrome can exit 0 without writing, and a
+    # stale PNG left behind would still satisfy verify.py check 7, which reads only the
+    # 33-byte IHDR for dimensions and never inspects pixel content.
+    if os.path.exists(dest):
+        os.remove(dest)
     subprocess.run([CHROME, "--headless=new", "--disable-gpu", "--hide-scrollbars",
                     "--force-device-scale-factor=1", "--window-size=1200,630",
                     "--screenshot=" + os.path.abspath(dest),
                     "file:///" + tmp.replace("\\", "/")],
                    check=True, capture_output=True, timeout=90)
+    # 5000, not 1000: measured blank 1200x630 PNGs compress to 2278 (black), 3630
+    # (white), 2302 (black + red rule only) bytes, so a 1000 floor passes a blank
+    # render. Real cards measure 13572..31122, so 5000 discriminates with margin.
+    if not os.path.exists(dest) or os.path.getsize(dest) < 5000:
+        raise SystemExit("failed to render %s: file missing or blank (%d bytes)"
+                         % (slug, os.path.getsize(dest) if os.path.exists(dest) else 0))
     return dest
 
 

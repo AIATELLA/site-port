@@ -21,3 +21,7 @@
 
 @media (min-width:860px) and (max-width:1199px){.blog-page.blog-page__scope{width:860px}.blog-page .article__nav-container{left:50%;transform:translate(-50%)}.blog-page .article__hero{padding:80px 96px 0}.blog-page .article__hero-wrap{justify-content:center;width:100%}.blog-page .article__content{height:393px}.blog-page .article__bg{top:-482px;-webkit-mask:radial-gradient(75% 52% at 50% 33.3%,#000 0%,#0000 100%);mask:radial-gradient(75% 52% at 50% 33.3%,#000 0%,#0000 100%)}}
 @media (max-width:859px){.blog-page.blog-page__scope{width:390px}.blog-page .article__hero{padding:40px 24px 0}.blog-page .article__hero-wrap{order:0;width:100%}.blog-page .article__title-wrap{width:100%}.blog-page .article__content{height:260px}.blog-page .article__bg{order:1;top:-519px;-webkit-mask:radial-gradient(100% 52% at 50% 33.3%,#000 0%,#0000 100%);mask:radial-gradient(100% 52% at 50% 33.3%,#000 0%,#0000 100%)}}
+
+/* phase-e:collapsed-variants start */
+.article__bg [data-framer-background-image-wrapper]{background-size:40px auto}@media (min-width:860px){.article__bg [data-framer-background-image-wrapper]{background-size:60px auto}}@media (min-width:1200px){.article__bg [data-framer-background-image-wrapper]{background-size:80px auto}}
+/* phase-e:collapsed-variants end */

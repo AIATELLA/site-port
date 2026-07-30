@@ -42,12 +42,27 @@ its own line, recursing with the same rules.
 Void elements (meta, link, img, br, ...) and self-closing tags have no
 children and are reproduced as a single atomic token either way.
 
+CSS hazard (found via the 404.html / security.html pixel diff during
+development, see phase-d-report.md): `white-space: pre` / `pre-wrap` /
+`pre-line` / `break-spaces` does not collapse whitespace at all --
+including whitespace-only text nodes between block-level boxes, which
+under `white-space: normal` would render as nothing. Framer applies these
+values extensively to RichText containers (the `framer-text` class and
+many page-specific classes), and it is inherited by descendants. An
+element carrying a class targeted by such a CSS rule (scanned from
+assets/css/*.css at runtime, not hand-maintained) is therefore always
+opaque too, regardless of tag or child count -- newline+indent inserted
+there would render as a literal blank line/gap, which is exactly the kind
+of regression this tool exists to prevent.
+
 Usage:
     python tools/prettify_html.py FILE [FILE ...]
     python tools/prettify_html.py --check FILE [FILE ...]   (dry run, exit 1 on would-be change)
 
 Idempotent: running it twice produces byte-identical output.
 """
+import glob
+import os
 import re
 import sys
 
@@ -107,6 +122,58 @@ _OPEN_TAG_RE = re.compile(
     r'(/?)>', re.S)
 _CLOSE_TAG_RE = re.compile(r'</\s*([a-zA-Z][a-zA-Z0-9:_-]*)\s*>')
 _DISPLAY_RE = re.compile(r'display\s*:\s*(flex|grid|none)', re.I)
+_CLASS_ATTR_RE = re.compile(r'''\bclass\s*=\s*(?:"([^"]*)"|'([^']*)')''', re.I)
+_AUTOSIZED_ATTR_RE = re.compile(r'\bdata-framer-component-text-autosized\b', re.I)
+_CSS_RULE_RE = re.compile(r'([^{}]+)\{([^{}]*)\}')
+_WHITE_SPACE_DECL_RE = re.compile(r'white-space\s*:\s*(pre-wrap|pre-line|break-spaces|pre)\b', re.I)
+_SELECTOR_SPLIT_RE = re.compile(r'\s*[>+~]\s*|\s+')
+_SELECTOR_CLASS_RE = re.compile(r'\.([a-zA-Z0-9_-]+)')
+
+
+def scan_whitespace_sensitive_classes(css_dir="assets/css"):
+    """Scan the site's CSS for `white-space: pre*` declarations and return
+    the set of class names those rules actually target (the rightmost
+    compound selector of each comma-separated selector -- ancestor/scope
+    classes in a descendant selector like `.page .hero__heading` are
+    deliberately excluded, since `.page` itself is not the element being
+    styled and flagging it would make the whole document opaque)."""
+    classes = set()
+    for path in sorted(glob.glob(os.path.join(css_dir, "*.css"))):
+        with open(path, encoding="utf-8") as fh:
+            css = fh.read()
+        for m in _CSS_RULE_RE.finditer(css):
+            selector_group, body = m.group(1), m.group(2)
+            if not _WHITE_SPACE_DECL_RE.search(body):
+                continue
+            for sel in selector_group.split(","):
+                sel = sel.strip()
+                if not sel:
+                    continue
+                parts = _SELECTOR_SPLIT_RE.split(sel)
+                target = parts[-1] if parts else sel
+                classes.update(_SELECTOR_CLASS_RE.findall(target))
+    return classes
+
+
+_whitespace_sensitive_classes_cache = None
+
+
+def whitespace_sensitive_classes():
+    global _whitespace_sensitive_classes_cache
+    if _whitespace_sensitive_classes_cache is None:
+        _whitespace_sensitive_classes_cache = scan_whitespace_sensitive_classes()
+    return _whitespace_sensitive_classes_cache
+
+
+def _has_whitespace_sensitive_marker(open_raw):
+    if _AUTOSIZED_ATTR_RE.search(open_raw):
+        return True
+    m = _CLASS_ATTR_RE.search(open_raw)
+    if not m:
+        return False
+    value = m.group(1) if m.group(1) is not None else m.group(2)
+    sensitive = whitespace_sensitive_classes()
+    return any(tok in sensitive for tok in value.split())
 
 
 class ParseError(Exception):
@@ -280,6 +347,8 @@ def is_opaque(node):
     if tl in ALWAYS_OPAQUE_TAGS:
         return True
     if tl not in SAFE_CONTAINER_TAGS:
+        return True
+    if _has_whitespace_sensitive_marker(open_raw):
         return True
     if _has_nonws_text_child(kids):
         return True

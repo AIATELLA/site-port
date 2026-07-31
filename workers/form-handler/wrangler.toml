@@ -1,0 +1,45 @@
+name = "aiatella-form-handler"
+main = "src/index.js"
+compatibility_date = "2025-11-01"
+
+# Logs and errors in the Cloudflare dashboard. A failed send is logged with
+# console.error, and that is only useful if this is on.
+[observability]
+enabled = true
+
+[vars]
+# Comma-separated. Only needed when the Worker is on a different host from
+# the site; leave it set anyway, it also blocks cross-site POSTs.
+ALLOWED_ORIGINS = "https://www.aiatella.com,https://aiatella.com"
+
+# Where enquiries go. Comma-separated for more than one recipient.
+MAIL_TO = "onni@aiatella.com"
+
+# Must be a verified sender on the Resend domain.
+MAIL_FROM = "AIATELLA website <forms@aiatella.com>"
+
+# "flag" delivers honeypot-tripped submissions with a [possible spam]
+# subject; "drop" bins them silently. Start on flag -- see the comment at
+# the top of src/index.js for why.
+SPAM_MODE = "flag"
+
+# --- Same-origin deployment (preferred) -------------------------------
+# Uncomment once the zone is on this Cloudflare account. The forms post to
+# a relative /api/... path, so there is no CORS and nothing to keep in sync.
+# [[routes]]
+# pattern = "www.aiatella.com/api/*"
+# zone_name = "aiatella.com"
+
+# --- Durable copy of every submission --------------------------------
+# Optional but strongly recommended: the Worker writes the submission here
+# BEFORE emailing, so a Resend outage costs a notification and not a lead.
+# It also backs the per-IP rate limiter. Create it with:
+#   npx wrangler kv namespace create SUBMISSIONS
+# then paste the id below and uncomment.
+# [[kv_namespaces]]
+# binding = "SUBMISSIONS"
+# id = "<paste the id wrangler printed>"
+
+# Secrets are NOT set here. Run:
+#   npx wrangler secret put RESEND_API_KEY
+#   npx wrangler secret put TURNSTILE_SECRET   # only if you enable Turnstile

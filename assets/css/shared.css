@@ -347,3 +347,45 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,[data-fra
 .framer-qIqHf.framer-v-saud5t.framer-j9rurs,.framer-qIqHf.framer-v-1uhed44.framer-j9rurs,.framer-qIqHf.framer-v-10pv2zj.framer-j9rurs,.framer-qIqHf.framer-v-flvfy0.framer-j9rurs{cursor:unset}
 .framer-qIqHf.framer-v-ye7su8.framer-j9rurs{cursor:unset;height:36px}
 .framer-qIqHf[data-border=true]:after,.framer-qIqHf [data-border=true]:after{content:"";border-width:var(--border-top-width,0)var(--border-right-width,0)var(--border-bottom-width,0)var(--border-left-width,0);border-color:var(--border-color,none);border-style:var(--border-style,none);box-sizing:border-box;border-radius:inherit;pointer-events:none;width:100%;height:100%;position:absolute;top:0;left:0}
+
+/* Form submission feedback (forms-backend): not part of the Framer export.
+   Framer's form runtime did not survive the static export, so the busy
+   state, the status line and the per-field errors are all produced by
+   assets/js/forms.js and styled here. The elements are created by that
+   script rather than written into the markup, which keeps the two
+   generated form pages free of anything this feature owns.
+
+   Colours come from the token layer so this stays in step with the rest of
+   the brand; the literal fallbacks are the same values design.css defines,
+   present only so the rules still resolve if design.css fails to load. */
+.form-status{align-self:stretch;margin-top:var(--aiatella-space-3, 12px);font-family:var(--aiatella-typography-body-m-font-family);font-size:var(--aiatella-typography-body-m-font-size);line-height:var(--aiatella-typography-body-m-line-height);font-weight:var(--aiatella-typography-body-m-font-weight);color:var(--aiatella-color-ink-muted, rgba(0, 0, 0, .7))}
+.form-status[data-state=error]{color:var(--aiatella-color-brand-red-deep, #8a0000)}
+.form-status[data-state=ok]{color:var(--aiatella-color-ink, #000)}
+/* align-self, not just text-align: the field column is a flex column with
+   align-items:center, so the note was a shrink-to-fit item centred in the
+   column and text-align had nothing to align inside. Stretching it to the
+   column width is what actually lines the message up with the input's own
+   text. The negative margins claw back part of the column's 16px gap so
+   the message sits under its own field rather than floating midway to the
+   next one. */
+.form-field-error{align-self:stretch;margin:calc(-1 * var(--aiatella-space-3, 12px)) 0 calc(-1 * var(--aiatella-space-2, 8px));text-align:left;font-family:var(--aiatella-typography-caption-m-font-family);font-size:var(--aiatella-typography-caption-m-font-size);line-height:var(--aiatella-typography-caption-m-line-height);color:var(--aiatella-color-brand-red-deep, #8a0000)}
+/* Recolour the border through Framer's own custom properties rather than
+   adding a shadow or outline of our own. The visible border is painted by
+   .framer-form-input-wrapper:after, an overlay pseudo-element, so an inset
+   box-shadow on the wrapper only survived at the rounded corners -- the
+   straight edges were covered by that overlay and the invalid state read
+   as two faint red flecks.
+
+   BOTH class names are in the selector on purpose, and it is the same trap
+   that broke Latest News. The per-page stylesheets set this property with
+   `.framer-9KMHP .framer-54ahyk`, which is two classes -- exactly the
+   specificity of `.framer-form-text-input:has(> [aria-invalid=true])`,
+   because :has() contributes the specificity of its most specific
+   argument. waitlist.css and contact.css load AFTER shared.css, so on a
+   tie they win and the field stayed grey. Three classes puts this above
+   them without resorting to !important. Do not "simplify" it back.
+
+   Setting the focused variant too keeps the field red while the visitor is
+   correcting it, rather than flipping back to the normal focus colour. */
+.framer-form-input-wrapper.framer-form-text-input:has(> [aria-invalid=true]){--framer-input-border-color:var(--aiatella-color-brand-red, #d10000);--framer-input-focused-border-color:var(--aiatella-color-brand-red, #d10000)}
+form[aria-busy=true] button[type=submit]{pointer-events:none}

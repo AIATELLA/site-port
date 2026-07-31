@@ -67,6 +67,25 @@ body{--framer-will-change-override:none}
 .nav.nav--mobile-open .nav__divider-5{order:9}
 .nav.nav--mobile-open .nav__link-6-container{order:10}
 .nav[data-border=true]:after,.nav [data-border=true]:after{content:"";border-width:var(--border-top-width,0)var(--border-right-width,0)var(--border-bottom-width,0)var(--border-left-width,0);border-color:var(--border-color,none);border-style:var(--border-style,none);box-sizing:border-box;border-radius:inherit;pointer-events:none;width:100%;height:100%;position:absolute;top:0;left:0}
+
+/* Mobile nav disclosure panel (fix-mobile-menu): not part of the Framer
+   export -- the static export shipped .nav__hamburger with no listener at
+   all. Driven by assets/js/mobile-nav.js, which toggles the "hidden"
+   attribute and the --open class below; kept inside .nav--mobile-closed
+   .nav__bar so it inherits the bar's own translucent background instead
+   of layering a second one. Scoped to the mobile breakpoint as
+   belt-and-braces -- the ssr-variant wrapper around the whole mobile
+   <nav> already hides it above 859px, this is a second guarantee. */
+@media (max-width:859px){
+.nav.nav--mobile-closed .nav__mobile-menu{display:none;flex-flow:column;align-items:stretch;gap:var(--aiatella-space-2, 8px);width:100%;padding-top:var(--aiatella-space-2, 8px)}
+.nav.nav--mobile-closed .nav__mobile-menu.nav__mobile-menu--open{display:flex}
+.nav .nav__mobile-menu-link{display:block;padding:var(--aiatella-space-3, 12px) var(--aiatella-space-4, 16px);border-radius:var(--aiatella-radius-m, 20px);color:var(--aiatella-color-ink, #000);text-decoration:none;font-family:var(--aiatella-typography-body-m-font-family);font-size:var(--aiatella-typography-body-m-font-size);line-height:var(--aiatella-typography-body-m-line-height);font-weight:var(--aiatella-typography-body-m-font-weight)}
+.nav .nav__mobile-menu-link:hover,.nav .nav__mobile-menu-link:focus-visible{background:var(--aiatella-color-surface-subtle-overlay, rgba(247, 247, 247, 0.4))}
+.nav .nav__mobile-menu-link[data-framer-page-link-current]{color:var(--aiatella-color-brand-red, #d10000)}
+.nav .nav__mobile-menu-cta{background:var(--aiatella-color-brand-red, #d10000);color:var(--aiatella-color-surface, #fff);text-align:center;margin-top:var(--aiatella-space-2, 8px)}
+.nav .nav__mobile-menu-cta:hover,.nav .nav__mobile-menu-cta:focus-visible{background:var(--aiatella-color-brand-red-deep, #8a0000);color:var(--aiatella-color-surface, #fff)}
+.nav.nav--mobile-closed .nav__hamburger-top,.nav.nav--mobile-closed .nav__hamburger-bot{transition:transform var(--aiatella-motion-duration-fast, 150ms) var(--aiatella-motion-easing-standard, cubic-bezier(0.44, 0, 0.56, 1))}
+}
 @supports (aspect-ratio:1){body{--framer-aspect-ratio-supported:auto}}
 .logo-link.logo-link__inner,.logo-link .logo-link__inner{display:block}
 .logo-link.logo-link__root{cursor:pointer;flex-flow:row;place-content:center flex-start;align-items:center;gap:8px;width:min-content;height:min-content;padding:0;text-decoration:none;display:flex;position:relative;overflow:visible}

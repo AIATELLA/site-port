@@ -123,7 +123,7 @@
                     <!--/$-->
                   </div>
                   <div class="nav__links">
-                    <div aria-label="Navigation menu icon" class="nav__hamburger" data-framer-name="Nav Icon" data-highlight="true" tabindex="0">
+                    <div aria-label="Navigation menu icon" class="nav__hamburger" data-framer-name="Nav Icon" data-highlight="true" tabindex="0" role="button" id="nav-mobile-toggle" aria-expanded="false" aria-controls="nav-mobile-menu">
                       <div class="nav__hamburger-bot" data-framer-name="Bottom" style="background-color:var(--aiatella-color-icon-nav, rgb(29, 31, 19));border-bottom-left-radius:10px;border-bottom-right-radius:10px;border-top-left-radius:10px;border-top-right-radius:10px;transform:none"></div>
                       <div class="nav__hamburger-top" data-framer-name="Top" style="background-color:var(--aiatella-color-icon-nav, rgb(29, 31, 19));border-bottom-left-radius:10px;border-bottom-right-radius:10px;border-top-left-radius:10px;border-top-right-radius:10px;transform:none"></div>
                     </div>
@@ -135,6 +135,14 @@
                     </div>
                     <!--/$-->
                   </div>
+                </div>
+                <div id="nav-mobile-menu" class="nav__mobile-menu" role="navigation" aria-label="Mobile navigation" hidden>
+                  <a class="nav__mobile-menu-link" href="approach.html">Approach</a>
+                  <a class="nav__mobile-menu-link" href="solutions.html" data-framer-page-link-current="true">Solutions</a>
+                  <a class="nav__mobile-menu-link" href="company.html">Company</a>
+                  <a class="nav__mobile-menu-link" href="blog.html">Resources</a>
+                  <a class="nav__mobile-menu-link" href="contact.html">Contact</a>
+                  <a class="nav__mobile-menu-link nav__mobile-menu-cta" href="waitlist.html">Waitlist</a>
                 </div>
               </div>
             </nav>
@@ -659,5 +667,6 @@
     <!-- Start of bodyEnd -->
     <!-- End of bodyEnd -->
     <script src="assets/js/scroll-animations.js"></script>
+    <script src="assets/js/mobile-nav.js"></script>
   </body>
 </html>

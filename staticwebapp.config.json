@@ -1,0 +1,46 @@
+{
+  "navigationFallback": {
+    "rewrite": "/404.html",
+    "exclude": [
+      "/assets/*",
+      "/design/*",
+      "/api/*"
+    ]
+  },
+  "routes": [
+    {
+      "route": "/index.html",
+      "redirect": "/",
+      "statusCode": 301
+    },
+    {
+      "route": "/*.html",
+      "redirect": "/*",
+      "statusCode": 301
+    },
+    {
+      "route": "/blog-details/*.html",
+      "redirect": "/blog-details/*",
+      "statusCode": 301
+    }
+  ],
+  "responseOverrides": {
+    "404": {
+      "rewrite": "/404.html"
+    }
+  },
+  "globalHeaders": {
+    "X-Frame-Options": "DENY",
+    "X-Content-Type-Options": "nosniff",
+    "Referrer-Policy": "strict-origin-when-cross-origin",
+    "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+    "X-XSS-Protection": "1; mode=block"
+  },
+  "mimeTypes": {
+    ".webp": "image/webp",
+    ".woff2": "font/woff2"
+  },
+  "platform": {
+    "apiRuntime": "node:20"
+  }
+}

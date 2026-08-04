@@ -167,9 +167,12 @@ async function storeSubmission(tableClient, formName, cleaned, ip) {
   }
 }
 
-// --- Send email via Resend ---
+// --- Send email via Azure Communication Services ---
 
-async function sendEmail(apiKey, mailTo, mailFrom, subject, formName, cleaned) {
+async function sendEmail(connectionString, mailTo, mailFrom, subject, formName, cleaned) {
+  const { EmailClient } = await import("@azure/communication-email");
+  const client = new EmailClient(connectionString);
+
   const lines = Object.entries(cleaned)
     .map(([k, v]) => `<tr><td style="padding:4px 12px 4px 0;font-weight:600">${k}</td><td style="padding:4px 0">${v}</td></tr>`)
     .join("\n");
@@ -181,34 +184,32 @@ async function sendEmail(apiKey, mailTo, mailFrom, subject, formName, cleaned) {
       Submitted via aiatella.com/${formName} form
     </p>`;
 
-  const res = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      from: mailFrom,
-      to: [mailTo],
+  const poller = await client.beginSend({
+    senderAddress: mailFrom,
+    content: {
       subject: `${subject} — ${cleaned.Name ?? "Unknown"}`,
-      reply_to: cleaned.Email,
       html,
-    }),
+    },
+    recipients: {
+      to: [{ address: mailTo }],
+    },
+    ...(cleaned.Email ? { replyTo: [{ address: cleaned.Email }] } : {}),
   });
 
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`Resend error ${res.status}: ${text}`);
+  const result = await poller.pollUntilDone();
+  if (result.status !== "Succeeded") {
+    throw new Error(`ACS Email error: ${result.status} — ${JSON.stringify(result.error)}`);
   }
 }
+
 
 // --- Main handler ---
 
 export async function handleFormSubmission(request, formName, { tableClient } = {}) {
-  const RESEND_API_KEY = process.env.RESEND_API_KEY;
+  const ACS_EMAIL_CONNECTION_STRING = process.env.ACS_EMAIL_CONNECTION_STRING;
   const TURNSTILE_SECRET = process.env.TURNSTILE_SECRET;
   const MAIL_TO = process.env.MAIL_TO || "onni@aiatella.com";
-  const MAIL_FROM = process.env.MAIL_FROM || "AIATELLA website <forms@aiatella.com>";
+  const MAIL_FROM = process.env.MAIL_FROM || "forms@aiatella.com";
   const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || "https://www.aiatella.com,https://aiatella.com").split(",");
 
   const origin = request.headers.get("origin");
@@ -279,10 +280,10 @@ export async function handleFormSubmission(request, formName, { tableClient } = 
   await storeSubmission(tableClient, formName, result.cleaned, ip);
 
   // Email
-  if (!RESEND_API_KEY) {
-    console.error("RESEND_API_KEY not set — skipping email");
+  if (!ACS_EMAIL_CONNECTION_STRING) {
+    console.error("ACS_EMAIL_CONNECTION_STRING not set — skipping email");
   } else {
-    await sendEmail(RESEND_API_KEY, MAIL_TO, MAIL_FROM, result.subject, formName, result.cleaned);
+    await sendEmail(ACS_EMAIL_CONNECTION_STRING, MAIL_TO, MAIL_FROM, result.subject, formName, result.cleaned);
   }
 
   // Success response

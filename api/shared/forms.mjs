@@ -191,7 +191,7 @@ async function sendEmail(connectionString, mailTo, mailFrom, subject, formName, 
       html,
     },
     recipients: {
-      to: [{ address: mailTo }],
+      to: mailTo.split(",").map(a => ({ address: a.trim() })),
     },
     ...(cleaned.Email ? { replyTo: [{ address: cleaned.Email }] } : {}),
   });
@@ -208,7 +208,7 @@ async function sendEmail(connectionString, mailTo, mailFrom, subject, formName, 
 export async function handleFormSubmission(request, formName, { tableClient } = {}) {
   const ACS_EMAIL_CONNECTION_STRING = process.env.ACS_EMAIL_CONNECTION_STRING;
   const TURNSTILE_SECRET = process.env.TURNSTILE_SECRET;
-  const MAIL_TO = process.env.MAIL_TO || "onni@aiatella.com";
+  const MAIL_TO = process.env.MAIL_TO || "contact@aiatella.com,onni@aiatella.com";
   const MAIL_FROM = process.env.MAIL_FROM || "forms@aiatella.com";
   const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || "https://www.aiatella.com,https://aiatella.com").split(",");
 
